@@ -1,8 +1,8 @@
 import pygame
 pygame.init()
 
-screen_height = 250
-screen_width = 500
+screen_height = 800
+screen_width = 800
 
 # Set up the drawing window
 screen = pygame.display.set_mode([screen_width,screen_height ])
@@ -11,6 +11,12 @@ screen = pygame.display.set_mode([screen_width,screen_height ])
 player_radius = 25
 player_x, player_y = 250, 250
 player_speed = 0.1
+
+#true and false statements
+up = False
+down = False
+left = False
+right = False
 
 # Run until the user asks to quit
 running = True
@@ -22,14 +28,38 @@ while running:
     # Get the state of all keys
     keys = pygame.key.get_pressed()
 
+        # Update the player position based on arrow key input
+    if keys[pygame.K_LEFT] :
+        up = False
+        down = False
+        left = True
+        right = False
+
+    if keys[pygame.K_RIGHT]:
+        up = False
+        down = False
+        left = False
+        right = True
+    if keys[pygame.K_UP]:
+        up = True
+        down = False
+        left = False
+        right = False
+    if keys[pygame.K_DOWN]:
+        up = False
+        down = True
+        left = False
+        right = False
+
+
     # Update the player position based on arrow key input
-    if keys[pygame.K_LEFT] and (player_x -player_speed > 0):
+    if left and (player_x -player_speed > 0):
         player_x -= player_speed
-    if keys[pygame.K_RIGHT] and (player_x + player_speed < screen_width):
+    if right and (player_x + player_speed < screen_width):
         player_x += player_speed
-    if keys[pygame.K_UP] and (player_y - player_speed > 0):
+    if up and (player_y - player_speed > 0):
         player_y -= player_speed 
-    if keys[pygame.K_DOWN] and (player_y -player_speed < screen_height):
+    if down and (player_y -player_speed < screen_height):
         player_y += player_speed
 
     # Fill the background with white
