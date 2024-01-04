@@ -89,12 +89,16 @@ while running:
         new_circle = True
     elif new_circle!= True:
         pygame.draw.circle(screen, (0, 0, 255), (int(circle[0]), int(circle[1])), circle[2])
+    elif new_circle:
+        circle = (random.randint(0, screen_width), random.randint(0, screen_height),
+            15) 
+        new_circle = False
 
     
 
     # Draw the player as a red circle
     pygame.draw.circle(screen, (255, 0, 0), (int(player_x), int(player_y)), player_radius)
-
+    pygame.draw.circle(screen, (100, 0,0 ), (int(player_x-player_radius), int(player_y-player_radiusy)), player_radius)
     # Flip the display
     pygame.display.flip()
 
