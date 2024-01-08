@@ -30,6 +30,9 @@ right = False
 
 #
 new_circle = False
+
+#snakes tail length
+num_circles =0
 # Run until the user asks to quit
 running = True
 while running:
@@ -69,12 +72,20 @@ while running:
     # Update the player position based on arrow key input
     if left and (player_x -player_speed > 0):
         player_x -= player_speed
+        for i in range(num_circles+1):
+            pygame.draw.circle(screen, (100, 0,0 ), (int(player_x+i*player_radius), int(player_y)), player_radius)
     if right and (player_x + player_speed < screen_width):
         player_x += player_speed
+        for i in range(num_circles+1):
+            pygame.draw.circle(screen, (100, 0,0 ), (int(player_x-i*player_radius), int(player_y)), player_radius)
     if up and (player_y - player_speed > 0):
         player_y -= player_speed 
+        for i in range(num_circles+1):
+            pygame.draw.circle(screen, (100, 0,0 ), (int(player_x), int(player_y+i*player_radius)), player_radius)
     if down and (player_y -player_speed < screen_height):
         player_y += player_speed
+        for i in range(num_circles+1):
+            pygame.draw.circle(screen, (100, 0,0 ), (int(player_x), int(player_y-i*player_radius)), player_radius)
 
     
     circle_x, circle_y, circle_radius = circle
@@ -83,8 +94,9 @@ while running:
 
 
     if distance < player_radius + circle_radius and new_circle!= True:
-        # Player touched the circle, make it bigger
-        player_radius += 5  # You can adjust the amount by which the circle grows
+       
+        #snakes tail length
+        num_circles += 1
         #new circle
         new_circle = True
     elif new_circle!= True:
@@ -98,7 +110,7 @@ while running:
 
     # Draw the player as a red circle
     pygame.draw.circle(screen, (255, 0, 0), (int(player_x), int(player_y)), player_radius)
-    pygame.draw.circle(screen, (100, 0,0 ), (int(player_x-player_radius), int(player_y-player_radiusy)), player_radius)
+  
     # Flip the display
     pygame.display.flip()
 
