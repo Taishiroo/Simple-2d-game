@@ -5,17 +5,32 @@ import random
 
 pygame.init()
 
+
+
+class FOOD:
+    def __init__(self) -> None:
+        pass
+
+
+
+
+
+#make into a grid
+cell_size = 30
+cell_number = 40 
 screen_height = 800
 screen_width = 800
 
 # Set up the drawing window
-screen = pygame.display.set_mode([screen_width,screen_height ])
+screen = pygame.display.set_mode([cell_size*cell_number,cell_size*cell_number ])
+# clock 
 
+clock = pygame.time.Clock()
 # Set up random circles
 # num_circles = 10
 # circle_radius_range = (10, 50)
-circle = (random.randint(0, screen_width), random.randint(0, screen_height),
-            15) 
+# circle = (random.randint(0, screen_width), random.randint(0, screen_height),
+#             15) 
 
 # Set up the player object
 player_radius = 25
@@ -113,6 +128,8 @@ while running:
   
     # Flip the display
     pygame.display.flip()
+
+    clock.tick(60)
 
 # Done! Time to quit.
 pygame.quit()
