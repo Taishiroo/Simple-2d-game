@@ -9,7 +9,9 @@ pygame.init()
 
 class FOOD:
     def __init__(self) -> None:
-        pass
+        self.x = 4
+        self.y = 5
+        self.pos = pygame.math.Vector2(self.x,self.y)
 
 
 
