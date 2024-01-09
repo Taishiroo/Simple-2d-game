@@ -13,13 +13,14 @@ class FOOD:
         self.y = 5
         self.pos = pygame.math.Vector2(self.x,self.y)
 
-
-
+    def draw_food(self):
+        food_rect = pygame.Rect(self.pos.x*cell_size,self.pos.y*cell_size,cell_size,cell_size) 
+        pygame.draw.rect(screen,(126,123,123),food_rect)
 
 
 #make into a grid
-cell_size = 30
-cell_number = 40 
+cell_size = 20
+cell_number = 20 
 screen_height = 800
 screen_width = 800
 
@@ -30,9 +31,9 @@ screen = pygame.display.set_mode([cell_size*cell_number,cell_size*cell_number ])
 clock = pygame.time.Clock()
 # Set up random circles
 # num_circles = 10
-# circle_radius_range = (10, 50)
-# circle = (random.randint(0, screen_width), random.randint(0, screen_height),
-#             15) 
+circle_radius_range = (10, 50)
+circle = (random.randint(0, screen_width), random.randint(0, screen_height),
+            15) 
 
 # Set up the player object
 player_radius = 25
@@ -51,6 +52,10 @@ new_circle = False
 #snakes tail length
 num_circles =0
 # Run until the user asks to quit
+
+#
+food = FOOD()
+
 running = True
 while running:
     for event in pygame.event.get():
@@ -85,6 +90,7 @@ while running:
         left = False
         right = False
 
+    food.draw_food()
 
     # Update the player position based on arrow key input
     if left and (player_x -player_speed > 0):
