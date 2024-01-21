@@ -20,26 +20,20 @@ class FOOD:
     
 class Snake: 
     def __init__(self):
-        self.body = [Vector2(1,2),Vector2(1,3)]
-        self.direction =1 
+        self.body = [Vector2(1,2),Vector2(1,3),Vector2(1,4)]
+        self.direction = Vector2(1,0)
     
     def draw_snake(self):
         
         for block in self.body:
-            food_rect = pygame.Rect(block.x*cell_size,block.y*cell_size,cell_size,cell_size) 
-            pygame.draw.rect(screen,(126,0,123),food_rect)
+            block_rect = pygame.Rect(block.x*cell_size,block.y*cell_size,cell_size,cell_size) 
+            pygame.draw.rect(screen,(126,0,123),block_rect)
 
     def move_snake(self):
-        self.body[0]+= Vector2(0,1)
-        prev = self.body[0]
-
-        for block in self.body:
-            copy = block
-            block = prev
-            prev = copy
-
-        self.body[1]=block
-
+  
+        body_copy = self.body[:-1]
+        body_copy.insert(0,body_copy[0] +self.direction)
+        self.body = body_copy[:]
 #make into a grid
 cell_size = 20
 cell_number = 20 
