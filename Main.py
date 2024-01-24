@@ -10,14 +10,18 @@ pygame.init()
 
 class FOOD:
     def __init__(self) -> None:
-        self.x = 4
-        self.y = 5
+        self.x = random.randint(1,cell_number-1)
+        self.y = random.randint(1,cell_number-1)
         self.pos = pygame.math.Vector2(self.x,self.y)
 
     def draw_food(self):
         food_rect = pygame.Rect(self.pos.x*cell_size,self.pos.y*cell_size,cell_size,cell_size) 
         pygame.draw.rect(screen,(126,123,123),food_rect)
     
+    def randomize(self):
+        self.x = random.randint(1,cell_number-1)
+        self.y = random.randint(1,cell_number-1)
+        self.pos = pygame.math.Vector2(self.x,self.y)
 class Snake: 
     def __init__(self):
         self.body = [Vector2(1,2),Vector2(1,3),Vector2(1,4)]
@@ -40,9 +44,18 @@ class MAIN:
         self.snake = Snake()
         self.food = FOOD()
     
+    def update(self):
+        self.snake.move_snake()
+        self.check_eat()
+    
+    def draw_elements(self):
+        self.food.draw_food()
+        self.snake.draw_snake()
     def check_eat(self):
         if self.snake.body[0] == self.food.pos:
            self.snake.body.insert(-1,self.snake.body[-1] ) 
+           self.food.randomize()
+    
 
 #make into a grid
 cell_size = 20
@@ -91,8 +104,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == SCREEN_UPDATE:
-            main.snake.move_snake()
-            main.check_eat()
+            main.update()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 main.snake.direction= Vector2(0,-1)
@@ -109,9 +121,8 @@ while running:
     # Get the state of all keys
     keys = pygame.key.get_pressed()
 
-   
-    main.food.draw_food()
-    main.snake.draw_snake()
+
+    main.draw_elements()
     
     # Update the player position based on arrow key input
     # if left and (player_x -player_speed > 0):
