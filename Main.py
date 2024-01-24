@@ -34,6 +34,16 @@ class Snake:
         body_copy = self.body[:-1]
         body_copy.insert(0,body_copy[0] +self.direction)
         self.body = body_copy[:]
+
+class MAIN:
+    def __init__(self) -> None:
+        self.snake = Snake()
+        self.food = FOOD()
+    
+    def check_eat(self):
+        if self.snake.body[0] == self.food.pos:
+           self.snake.body.insert(-1,self.snake.body[-1] ) 
+
 #make into a grid
 cell_size = 20
 cell_number = 20 
@@ -69,63 +79,57 @@ new_circle = False
 num_circles =0
 # Run until the user asks to quit
 
-#
-food = FOOD()
-snake = Snake()
+SCREEN_UPDATE = pygame.USEREVENT
+pygame.time.set_timer(SCREEN_UPDATE,150)
+
+
+main = MAIN()
 running = True
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == SCREEN_UPDATE:
+            main.snake.move_snake()
+            main.check_eat()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                main.snake.direction= Vector2(0,-1)
+            if event.key == pygame.K_LEFT :
+                main.snake.direction= Vector2(-1,0)
 
+            if event.key == pygame.K_RIGHT:
+               main.snake.direction= Vector2(1,0)
+    
+            if event.key == pygame.K_DOWN:
+               main.snake.direction= Vector2(0,1)
      # Fill the background with white
     screen.fill((255, 255, 255))
     # Get the state of all keys
     keys = pygame.key.get_pressed()
 
+   
+    main.food.draw_food()
+    main.snake.draw_snake()
+    
     # Update the player position based on arrow key input
-    if keys[pygame.K_LEFT] :
-        up = False
-        down = False
-        left = True
-        right = False
-
-    if keys[pygame.K_RIGHT]:
-        up = False
-        down = False
-        left = False
-        right = True
-    if keys[pygame.K_UP]:
-        up = True
-        down = False
-        left = False
-        right = False
-    if keys[pygame.K_DOWN]:
-        up = False
-        down = True
-        left = False
-        right = False
-
-    food.draw_food()
-    snake.draw_snake()
-    snake.move_snake()
-    # Update the player position based on arrow key input
-    if left and (player_x -player_speed > 0):
-        player_x -= player_speed*cell_size
-        for i in range(num_circles+1):
-            pygame.draw.circle(screen, (100, 0,0 ), (int(player_x+i*player_radius), int(player_y)), player_radius)
-    if right and (player_x + player_speed < screen_width):
-        player_x += player_speed *cell_size
-        for i in range(num_circles+1):
-            pygame.draw.circle(screen, (100, 0,0 ), (int(player_x-i*player_radius), int(player_y)), player_radius)
-    if up and (player_y - player_speed > 0):
-        player_y -= player_speed *cell_size
-        for i in range(num_circles+1):
-            pygame.draw.circle(screen, (100, 0,0 ), (int(player_x), int(player_y+i*player_radius)), player_radius)
-    if down and (player_y -player_speed < screen_height):
-        player_y += player_speed*cell_size
-        for i in range(num_circles+1):
-            pygame.draw.circle(screen, (100, 0,0 ), (int(player_x), int(player_y-i*player_radius)), player_radius)
+    # if left and (player_x -player_speed > 0):
+    #     player_x -= player_speed*cell_size
+    #     for i in range(num_circles+1):
+    #         pygame.draw.circle(screen, (100, 0,0 ), (int(player_x+i*player_radius), int(player_y)), player_radius)
+    # if right and (player_x + player_speed < screen_width):
+    #     player_x += player_speed *cell_size
+    #     for i in range(num_circles+1):
+    #         pygame.draw.circle(screen, (100, 0,0 ), (int(player_x-i*player_radius), int(player_y)), player_radius)
+    # if up and (player_y - player_speed > 0):
+    #     player_y -= player_speed *cell_size
+    #     for i in range(num_circles+1):
+    #         pygame.draw.circle(screen, (100, 0,0 ), (int(player_x), int(player_y+i*player_radius)), player_radius)
+    # if down and (player_y -player_speed < screen_height):
+    #     player_y += player_speed*cell_size
+    #     for i in range(num_circles+1):
+    #         pygame.draw.circle(screen, (100, 0,0 ), (int(player_x), int(player_y-i*player_radius)), player_radius)
 
     
     circle_x, circle_y, circle_radius = circle
@@ -154,7 +158,7 @@ while running:
     # Flip the display
     pygame.display.flip()
 
-    clock.tick(5)
+    clock.tick(60)
 
 # Done! Time to quit.
 pygame.quit()
