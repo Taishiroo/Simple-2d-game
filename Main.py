@@ -47,16 +47,23 @@ class MAIN:
     def update(self):
         self.snake.move_snake()
         self.check_eat()
-    
+        self.check_fail()
+
     def draw_elements(self):
         self.food.draw_food()
         self.snake.draw_snake()
+    
     def check_eat(self):
         if self.snake.body[0] == self.food.pos:
            self.snake.body.insert(-1,self.snake.body[-1] ) 
            self.food.randomize()
-    
+    def check_fail(self):
+        if not 0 <= self.snake.body[0].x  < cell_number or not 0 <= self.snake.body[0].y < cell_number:
+            self.game_over()
 
+    def game_over(self):
+        pygame.quit()
+        
 #make into a grid
 cell_size = 20
 cell_number = 20 
