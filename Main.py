@@ -60,6 +60,10 @@ class MAIN:
     def check_fail(self):
         if not 0 <= self.snake.body[0].x  < cell_number or not 0 <= self.snake.body[0].y < cell_number:
             self.game_over()
+        
+        for block in self.snake.body[1:]:
+            if block == self.snake.body[0]:
+                self.game_over()
 
     def game_over(self):
         pygame.quit()
@@ -114,15 +118,19 @@ while running:
             main.update()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                main.snake.direction= Vector2(0,-1)
+                if main.snake.direction.y != 1:
+                    main.snake.direction= Vector2(0,-1)
             if event.key == pygame.K_LEFT :
-                main.snake.direction= Vector2(-1,0)
+                if main.snake.direction.x != 1:
+                    main.snake.direction= Vector2(-1,0)
 
             if event.key == pygame.K_RIGHT:
-               main.snake.direction= Vector2(1,0)
+               if main.snake.direction.x != -1:
+                main.snake.direction= Vector2(1,0)
     
             if event.key == pygame.K_DOWN:
-               main.snake.direction= Vector2(0,1)
+               if main.snake.direction.y != -1:
+                main.snake.direction= Vector2(0,1)
      # Fill the background with white
     screen.fill((255, 255, 255))
     # Get the state of all keys
