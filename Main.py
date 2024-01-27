@@ -50,7 +50,7 @@ class Snake:
 
     def draw_snake(self):
         
-        for block in self.body:
+        for index,block in enumerate(self.body):
             block_rect = pygame.Rect(block.x*cell_size,block.y*cell_size,cell_size,cell_size) 
             pygame.draw.rect(screen,(126,0,123),block_rect)
 
