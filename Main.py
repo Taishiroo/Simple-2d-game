@@ -23,10 +23,19 @@ class FOOD:
         self.x = random.randint(1,cell_number-1)
         self.y = random.randint(1,cell_number-1)
         self.pos = pygame.math.Vector2(self.x,self.y)
+
 class Snake: 
     def __init__(self):
         self.body = [Vector2(1,2),Vector2(1,3),Vector2(1,4)]
         self.direction = Vector2(1,0)
+        
+        #import the images 
+        self.head_up =  pygame.image.load('Graphics/head_up.png').convert_alpha()
+        self.head_down =  pygame.image.load('Graphics/head_down.png').convert_alpha()
+        self.head_right =  pygame.image.load('Graphics/head_right.png').convert_alpha()
+        self.head_left =  pygame.image.load('Graphics/head_left.png').convert_alpha()
+
+        
     
     def draw_snake(self):
         
