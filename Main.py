@@ -47,6 +47,8 @@ class Snake:
         self.body_tr =  pygame.image.load('Graphics/body_tr.png').convert_alpha()
         self.body_bl =  pygame.image.load('Graphics/body_bl.png').convert_alpha()
         self.body_br =  pygame.image.load('Graphics/body_br.png').convert_alpha()
+        self.crunch_sound = pygame.mixer.Sound('Sound/crunch.wav')
+
 
     def draw_snake(self):
         self.update_head_graphics()
@@ -103,6 +105,9 @@ class Snake:
     
     def add_block(self):
         self.new_block = True
+    
+    def play_crunch_sound(self):
+        self.crunch_sound.play()
 
 class MAIN:
     def __init__(self) -> None:
@@ -115,13 +120,21 @@ class MAIN:
         self.check_fail()
 
     def draw_elements(self):
+ 
+        self.draw_grass()
         self.food.draw_food()
         self.snake.draw_snake()
+        self.draw_score()
     
     def check_eat(self):
         if self.snake.body[0] == self.food.pos:
            self.snake.add_block()
+           self.snake.play_crunch_sound()
            self.food.randomize()
+        
+        for block in self.snake.body[1:]:
+            if block == self.food.pos:
+                self.food.randomize()
     def check_fail(self):
         if not 0 <= self.snake.body[0].x  < cell_number or not 0 <= self.snake.body[0].y < cell_number:
             self.game_over()
@@ -132,8 +145,32 @@ class MAIN:
 
     def game_over(self):
         pygame.quit()
+    
+    def draw_grass(self):
+        grass_color = (167,209,91)
+        for row in range(cell_number):
+            if row % 2== 0:
+                for col in range(cell_number):
+                    if col % 2== 0:
+                        grass_rect = pygame.Rect(col* cell_size, row*cell_size , cell_size, cell_size   )
+                        pygame.draw.rect(screen,grass_color, grass_rect)
+            else: 
+                for col in range(cell_number):
+                    if col % 2!= 0:
+                        grass_rect = pygame.Rect(col* cell_size, row*cell_size , cell_size, cell_size   )
+                        pygame.draw.rect(screen,grass_color, grass_rect)
+    
 
+    def draw_score(self):
+        score_text = str(len(self.snake.body)-3)
+        score_surface = game_font.render(score_text,True, (56,74,12) )
+        score_x = int(cell_size * cell_number - 60 )
+        score_y = int(cell_size * cell_number - 40 )
+        score_rect = score_surface.get_rect(center = (score_x,score_y   ))
+        apple_rect = apple.get_rect(midright = (score_rect.left,score_rect.centery))
 
+        screen.blit(score_surface,score_rect)
+        screen.blit(apple,apple_rect)
 
 
         
@@ -160,7 +197,7 @@ circle = (random.randint(0, screen_width), random.randint(0, screen_height),
 player_x, player_y = 250, 250
 
 
-
+game_font = pygame.font.Font(None, 25)
 
 #snakes tail length
 num_circles =0
@@ -195,7 +232,7 @@ while running:
                if main.snake.direction.y != -1:
                 main.snake.direction= Vector2(0,1)
      # Fill the background with white
-    screen.fill((255, 255, 255))
+    screen.fill((167,200,91))
     # Get the state of all keys
     keys = pygame.key.get_pressed()
 
